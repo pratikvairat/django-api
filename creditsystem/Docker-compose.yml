@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  djangoapp:
+    container_name: creditap
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_URL=postgres://postgres:postgres@localhost:5432/creditapi
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=creditapi
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=creditapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
